@@ -1,0 +1,42 @@
+﻿@model Multas.Models.Agentes
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Agentes</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fotografia)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fotografia)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Esquadra)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Esquadra)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

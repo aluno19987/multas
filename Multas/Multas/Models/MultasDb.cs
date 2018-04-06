@@ -21,7 +21,7 @@ namespace Multas.Models
 
         public virtual DbSet<Viaturas> Viaturas { get; set; }
 
-        public virtual DbSet<Agentes> Agente { get; set; }
+        public virtual DbSet<Agentes> Agentes { get; set; }
 
         
     }
