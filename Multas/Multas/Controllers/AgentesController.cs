@@ -39,17 +39,21 @@ namespace Multas.Controllers
             //protege a execução do métedo contra a Não existencia de dados
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                //ou nao foi introduzido um ID válido ou foi introduzido um valor completamente errado
+                return RedirectToAction("Index");
+                
             }
             //vai procurar o Agente cujo ID foi Fornecido
-            Agentes agentes = db.Agentes.Find(id);
+            Agentes agente = db.Agentes.Find(id);
             //se o agente nao for encontrado.+......+++..+.....
          
-            if (agentes == null)
+            if (agente == null)
             {
-                return HttpNotFound();
+                //return HttpNotFound();
+                return RedirectToAction("Index");
             }
-            return View(agentes);
+            return View(agente);
         }
 
         // GET: Agentes/Create
@@ -124,19 +128,23 @@ namespace Multas.Controllers
         // GET: Agentes/Edit/5
         public ActionResult Edit(int? id)
         {
+            //falta tratar das imagens
+
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index");
             }
-            Agentes agentes = db.Agentes.Find(id);
-            if (agentes == null)
+            Agentes agente = db.Agentes.Find(id);
+            if (agente == null)
             {
-                return HttpNotFound();
+                //return HttpNotFound();
+                return RedirectToAction("Index");
             }
-            return View(agentes);
+            return View(agente);
         }
 
-        // POST: Agentes/Edit/5
+        // POST: Agentes/Edit/
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -158,14 +166,16 @@ namespace Multas.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index");
             }
-            Agentes agentes = db.Agentes.Find(id);
-            if (agentes == null)
+            Agentes agente = db.Agentes.Find(id);
+            if (agente == null)
             {
-                return HttpNotFound();
+                //return HttpNotFound();
+                return RedirectToAction("Index");
             }
-            return View(agentes);
+            return View(agente);
         }
 
         // POST: Agentes/Delete/5
@@ -174,12 +184,23 @@ namespace Multas.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             //procurar o agente 
-            Agentes agentes = db.Agentes.Find(id);
-            //remover a memória
-            db.Agentes.Remove(agentes);
-            //commit na BD
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            Agentes agente = db.Agentes.Find(id);
+            try
+            {
+                //remover a memória
+                db.Agentes.Remove(agente);
+                //commit na BD
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            catch (Exception)
+            {
+                //gera uma mensagem de erro, a ser apresentada ao utilizador 
+                ModelState.AddModelError("", string.Format("Não foi possivel remover o agente '{0}', porque existem {1} multas associadas a ele.", agente.Nome, agente.ListaDeMultas.Count));
+            }
+
+            //reenviar os dados +ara a view
+            return View(agente);
         }
 
         protected override void Dispose(bool disposing)

@@ -1,15 +1,18 @@
 ﻿@model Multas.Models.Agentes
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Apagar";
 }
 
 <h2>Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Tem a certeza que quer apagar o agente?</h3>
 <div>
-    <h4>Agentes</h4>
     <hr />
+
+    @* apresenta mensagens de erro *@
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Nome)
@@ -37,12 +40,13 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            @Html.ActionLink("Regressar ao início", "Index")
         </div>
     }
 </div>
