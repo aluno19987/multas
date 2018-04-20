@@ -24,7 +24,10 @@ namespace Multas.Models
 
         public virtual DbSet<Agentes> Agentes { get; set; }
 
-        //configura a forma como as tabelas são criadas
+        /// <summary>
+        /// configura a forma como as tabelas são criadas
+        /// </summary>
+        /// <param name="modelBuilder"> objeto que referencia ao gerador de base de dados</param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 

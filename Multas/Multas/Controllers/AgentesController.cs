@@ -162,6 +162,12 @@ namespace Multas.Controllers
         }
 
         // GET: Agentes/Delete/5
+        /// <summary>
+        /// Procura os dados de um agente,
+        /// e mostra-os no ecrã
+        /// </summary>
+        /// <param name="id"> o identificador do agente a pesquisar </param>
+        /// <returns></returns>
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -179,6 +185,12 @@ namespace Multas.Controllers
         }
 
         // POST: Agentes/Delete/5
+        /// <summary>
+        /// concretiza, torna definitiva quando possivel
+        /// a remoção de um agente
+        /// </summary>
+        /// <param name="id"> o identificador do agente a remover </param>
+        /// <returns></returns>
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
