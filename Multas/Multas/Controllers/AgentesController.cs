@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -18,10 +19,11 @@ namespace Multas.Controllers
         // GET: Agentes
         public ActionResult Index()
         {
-            //db.Agentes.ToList() --> SQL: select * from Agentes
+            //db.Agentes.ToList() --> SQL: select * from Agentes ORDER BY nome
             //constroi uma lista CommandBehavior os dados de todos os Agentes 
             //e envia-a 
-            return View(db.Agentes.ToList());
+            var listaAgentes = db.Agentes.ToList().OrderBy(a=>a.Nome);
+            return View(listaAgentes);
         }
 
         // GET: Agentes/Details/5
@@ -61,24 +63,64 @@ namespace Multas.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Nome,Fotografia,Esquadra")] Agentes agentes)
+        public ActionResult Create([Bind(Include = "Nome,Esquadra")] Agentes agente, HttpPostedFileBase fileUploadFotografia)
         {
-            //ModelState.IsValid -->confronta os dados fornecidos com o modelo
-            //se não respeitar as regras do modelo, rejeita os dados
+            // determinar o ID do novo Agente
+            int novoID = 0;
+
+            if(db.Agentes.Count() == 0){
+                novoID = 1;
+            }
+            else
+            {
+                novoID = db.Agentes.Max(a => a.ID) + 1;
+            }
+
+
+            // atribuir o ID ao novo agente
+            agente.ID = novoID;
+
+            // var. auxiliar
+            string nomeFotografia = "Agente_" + novoID + ".jpg";
+            string caminhoParaFotografia = Path.Combine(Server.MapPath("~/imagens/"), nomeFotografia); // indica onde a imagem será guardada
+
+            // verificar se chega efetivamente um ficheiro ao servidor
+            if (fileUploadFotografia != null)
+            {
+                // guardar o nome da imagem na BD
+                agente.Fotografia = nomeFotografia;
+            }
+            else
+            {
+                // não há imagem...
+                ModelState.AddModelError("", "Não foi fornecida uma imagem..."); // gera MSG de erro
+                return View(agente); // reenvia os dados do 'Agente' para a View
+            }
+
+            //    verificar se o ficheiro é realmente uma imagem ---> casa
+            //    redimensionar a imagem --> ver em casa
+
+            // ModelState.IsValid --> confronta os dados fornecidos com o modelo
+            // se não respeitar as regras do modelo, rejeita os dados
             if (ModelState.IsValid)
             {
-                //adiciona na estrutura de dados, na memoria do servidor,
-                //o objeto Agentes
-                db.Agentes.Add(agentes);
-                //faz 'commit'
-                db.SaveChanges();
-                //redireciona o utilizador para a pagina de inicio
-                return RedirectToAction("Index");
+                try
+                {
+                    db.Agentes.Add(agente);
+                    db.SaveChanges();
+                    fileUploadFotografia.SaveAs(caminhoParaFotografia);
+                    return RedirectToAction("Index");
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("", "Ocorreu um erro nao determinado...");
+                }
             }
-            //devolve os dados do agente na view
-            return View(agentes);
-        }
 
+                // devolve os dados do agente à View
+                return View(agente);
+        }
+        
         // GET: Agentes/Edit/5
         public ActionResult Edit(int? id)
         {

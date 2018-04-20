@@ -104,6 +104,16 @@
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="imagens\AndreSilveira.jpg" />
+    <Content Include="imagens\AntonioRocha.jpg" />
+    <Content Include="imagens\AugustoCarvalho.jpg" />
+    <Content Include="imagens\BeatrizPinto.jpg" />
+    <Content Include="imagens\ClaudiaPinto.jpg" />
+    <Content Include="imagens\JoseAlves.jpg" />
+    <Content Include="imagens\LurdesVieira.jpg" />
+    <Content Include="imagens\PauloVieira.jpg" />
+    <Content Include="imagens\RuiVieira.jpg" />
+    <Content Include="imagens\TaniaVieira.jpg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

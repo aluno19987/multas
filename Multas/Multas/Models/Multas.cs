@@ -42,7 +42,7 @@ namespace Multas.Models
 
         //fk Viaturas
         [ForeignKey("Viatura")]
-        public int ViaturasFK { get; set; }
+        public int ViaturaFK { get; set; }
 
         public virtual Viaturas Viatura { get; set; }
         

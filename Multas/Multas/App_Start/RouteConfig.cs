@@ -13,10 +13,11 @@ namespace Multas
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            //definir os valores a serem utilizados na Rota, por defeito
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Agentes", action = "Index", id = UrlParameter.Optional }
             );
         }
     }
