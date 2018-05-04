@@ -14,7 +14,7 @@ namespace Multas.Controllers
     public class AgentesController : Controller
     {
         //cria um objeto privado, que representa a base de dados
-        private MultasDb db = new MultasDb();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Agentes
         public ActionResult Index()
@@ -87,10 +87,11 @@ namespace Multas.Controllers
             // var. auxiliar
             string nomeFotografia = "Agente_" + novoID + ".jpg";
             string caminhoParaFotografia = Path.Combine(Server.MapPath("~/imagens/"), nomeFotografia); // indica onde a imagem será guardada
-
             // verificar se chega efetivamente um ficheiro ao servidor
-            if (fileUploadFotografia != null)
+            if (fileUploadFotografia != null && fileUploadFotografia.ContentType.Equals("image/jpeg"))
             {
+                
+
                 // guardar o nome da imagem na BD
                 agente.Fotografia = nomeFotografia;
             }
@@ -149,16 +150,53 @@ namespace Multas.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Nome,Fotografia,Esquadra")] Agentes agentes)
+        public ActionResult Edit([Bind(Include = "ID,Nome,Esquadra")] Agentes agente, HttpPostedFileBase fileUploadFotografia)
         {
-            //atualiza od dados do agente, na estrutura de dados em memória
+
+            // var. auxiliar
+            string nomeFotografia = "Agente_" + agente.ID + ".jpg";
+            string caminhoParaFotografia = Path.Combine(Server.MapPath("~/imagens/"), nomeFotografia); // indica onde a imagem será guardada
+
+            // verificar se chega efetivamente um ficheiro ao servidor
+            if (fileUploadFotografia != null && fileUploadFotografia.ContentType.Equals("image/jpeg"))
+            {
+                
+                // guardar o nome da imagem na BD
+                agente.Fotografia = nomeFotografia;
+                fileUploadFotografia.SaveAs(caminhoParaFotografia);
+            }
+            else if(fileUploadFotografia == null)
+            {
+
+            }
+            else
+            {
+                ModelState.AddModelError("", "Não foi fornecida uma imagem..."); // gera MSG de erro
+                return View(agente); // reenvia os dados do 'Agente' para a View
+
+            }
+
+            //    verificar se o ficheiro é realmente uma imagem ---> casa
+            //    redimensionar a imagem --> ver em casa
+
+            // ModelState.IsValid --> confronta os dados fornecidos com o modelo
+            // se não respeitar as regras do modelo, rejeita os dados
             if (ModelState.IsValid)
             {
-                db.Entry(agentes).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                try
+                {
+                    db.Entry(agente).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                catch (Exception)
+                {
+                    ModelState.AddModelError("", "Ocorreu um erro nao determinado...");
+                }
             }
-            return View(agentes);
+
+            return View(agente);
+            
         }
 
         // GET: Agentes/Delete/5

@@ -1,0 +1,125 @@
+ public Categorias()
+        {
+            Lista_Filmes = new HashSet<Filmes>();
+        }
+
+        [Key]
+        public int Id_categoria { get; set; }
+
+        [StringLength(40)]
+        public string Nome { get; set; }
+
+        public virtual ICollection<Filmes> Lista_Filmes { get; set; }
+
+
+
+
+
+
+        public Filmes()
+        {
+            Lista_Reviews = new HashSet<Reviews>();
+
+            Lista_Categorias = new HashSet<Categorias>();
+        }
+
+        [Key]
+        public int Id_filme { get; set; }
+
+        [StringLength(40)]
+        public string Nome { get; set; }
+
+        public int Data_lancamento { get; set; }
+
+        public string Elenco { get; set; }
+
+        public int Duracao { get; set; }
+
+
+        public virtual ICollection<Reviews> Lista_Reviews { get; set; }
+
+        public virtual ICollection<Categorias> Lista_Categorias { get; set; }
+
+
+
+        public FilmesDb() : base("FilmesDbConnectionString")
+        {
+
+        }
+
+        //identificar as tabelas da base de dados
+        public virtual DbSet<Categorias> Categorias { get; set; }
+
+        public virtual DbSet<Filmes> Filmes { get; set; }
+
+        public virtual DbSet<Multimedia> Multimedia { get; set; }
+
+        public virtual DbSet<Reviews> Reviews { get; set; }
+
+        public virtual DbSet<Utilizadores> Agentes { get; set; }
+
+
+
+
+        public Multimedia()
+        {
+            Lista_Filmes = new HashSet<Filmes>();
+        }
+
+        [Key]
+        public int Id_mult { get; set; }
+
+        [StringLength(40)]
+        public string Nome { get; set; }
+
+        public string Tipo { get; set; }
+
+        [ForeignKey("Filme")]
+        public int FilmeFK { get; set; }
+        public virtual Filmes Filme { get; set; }
+
+        public virtual ICollection<Filmes> Lista_Filmes { get; set; }
+
+
+
+
+
+        [Key]
+        public int Id_Review { get; set; }
+
+        public string Review { get; set; }
+
+        public int NStars { get; set; }
+
+        public string Data { get; set; }
+
+
+        [ForeignKey("Id_utilizador")]
+        public int UtilizadorFK { get; set; }
+        public virtual Utilizadores Utilizador { get; set; }
+
+
+        [ForeignKey("Filme")]
+        public int FilmeFK { get; set; }
+        public virtual Filmes Filme { get; set; }
+
+
+
+
+         public Utilizadores()
+        {
+            Lista_Reviews = new HashSet<Reviews>();
+        }
+
+        [Key]
+        public int Id_utilizador { get; set; }
+
+        public string Nome { get; set; }
+
+        public int Idade { get; set; }
+
+        public string Mail { get; set; }
+
+        public virtual ICollection<Reviews> Lista_Reviews { get; set; }
+        
+

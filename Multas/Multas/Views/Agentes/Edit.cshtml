@@ -1,13 +1,15 @@
 ﻿@model Multas.Models.Agentes
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Editar";
 }
 
-<h2>Edit</h2>
+<h2>Editar Agente</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Agentes", FormMethod.Post,
+                      new { enctype = "multipart/form-data" }
+                      ))
 {
     @Html.AntiForgeryToken()
     
@@ -27,8 +29,18 @@
 
         <div class="form-group">
             @Html.LabelFor(model => model.Fotografia, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Fotografia, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="col-md-10" style="display:flex">
+                
+                
+
+                <a href="~/imagens/ @Html.DisplayFor(agente => agente.Fotografia)" target="_blank" >
+                <img src="~/imagens/@Html.DisplayFor(agente => agente.Fotografia)" width="50" height="37" />
+                </a>
+                <input type="file"
+                       name="fileUploadFotografia"
+                       style="color:blue;"
+                       accept=".jpg" />
+
                 @Html.ValidationMessageFor(model => model.Fotografia, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -36,8 +48,10 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Esquadra, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Esquadra, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Esquadra, "", new { @class = "text-danger" })
+                     @Html.EditorFor(model => model.Esquadra, new { htmlAttributes = new { @class = "form-control" } })
+                     @Html.ValidationMessageFor(model => model.Esquadra, "", new { @class = "text-danger" })
+
+
             </div>
         </div>
 
@@ -50,7 +64,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Voltar", "Index")
 </div>
 
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
